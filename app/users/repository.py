@@ -7,6 +7,9 @@ def get_user_by_email(session: Session, email: str) -> User | None:
     query = select(User).where(User.email == email)
     return session.scalar(query)
 
+def get_user_by_id(session: Session, user_id: int) -> User | None:
+    return session.get(User, user_id)
+
 def add_user(
         session: Session,
         email: str,
