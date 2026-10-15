@@ -3,13 +3,13 @@ from starlette.concurrency import run_in_threadpool
 
 from app.security import hash_password
 from app.users.models import User
-from app.users.repository import add_user, get_user_by_email
+from app.users.repository import add_user, get_user_by_email, fetch_users 
 
 class EmailAlreadyRegisteredError(Exception):
     pass
 
 
-async def create_user_async(
+async def create_user(
     session: AsyncSession,
     email: str,
     password: str
@@ -29,3 +29,8 @@ async def create_user_async(
     await session.commit()
     await session.refresh(user)
     return user
+
+async def list_users(
+        session: AsyncSession
+) -> list[User]:
+    return await fetch_users(session)

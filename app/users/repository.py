@@ -17,6 +17,14 @@ async def get_user_by_id(
 ) -> User | None:
     return await session.get(User, user_id)
 
+async def fetch_users(
+        session: AsyncSession
+) -> list[User]:
+
+    query = select(User).order_by(User.id)
+    result = await session.scalars(query)
+    return list(result)
+
 def add_user(
         session: AsyncSession,
         email: str,

@@ -4,9 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_async_session
-from app.tickets.repository import list_tickets
 from app.tickets.schemas import TicketRead, TicketCreate
-from app.tickets.service import RequesterNotFoundError, create_ticket
+from app.tickets.service import RequesterNotFoundError, create_ticket, list_tickets
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
 

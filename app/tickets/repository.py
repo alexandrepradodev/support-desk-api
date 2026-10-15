@@ -5,7 +5,7 @@ from app.tickets.models import Ticket
 
 
 
-async def list_tickets(session: AsyncSession) -> list[Ticket]:
+async def fetch_tickets(session: AsyncSession) -> list[Ticket]:
     query = select(Ticket).order_by(Ticket.id)
     result = await session.scalars(query)
     return list(result)

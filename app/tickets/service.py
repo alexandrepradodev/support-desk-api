@@ -3,7 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.users.repository import get_user_by_id
 from app.tickets.models import Ticket
-from app.tickets.repository import add_ticket
+from app.tickets.repository import add_ticket, fetch_tickets
+
+
 
 class RequesterNotFoundError(Exception):
     pass
@@ -26,4 +28,9 @@ async def create_ticket(
     await session.commit()
     await session.refresh(ticket)
     return ticket
+
+async def list_tickets(
+    session: AsyncSession
+) -> list[Ticket]:
+    return await fetch_tickets(session)
 
