@@ -1,14 +1,17 @@
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.tickets.models import Ticket
 
-def list_tickets(session: Session) -> list[Ticket]:
+
+
+async def list_tickets(session: AsyncSession) -> list[Ticket]:
     query = select(Ticket).order_by(Ticket.id)
-    return list(session.scalars(query))
+    result = await session.scalars(query)
+    return list(result)
 
 def add_ticket(
-        session: Session,
+        session: AsyncSession,
         title: str,
         description: str,
         requester_id: int,

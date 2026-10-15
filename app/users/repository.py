@@ -1,17 +1,24 @@
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.users.models import User
 
-def get_user_by_email(session: Session, email: str) -> User | None:
+async def get_user_by_email(
+        session: AsyncSession,
+        email: str
+) -> User | None:
     query = select(User).where(User.email == email)
-    return session.scalar(query)
+    return await session.scalar(query)
 
-def get_user_by_id(session: Session, user_id: int) -> User | None:
-    return session.get(User, user_id)
+
+async def get_user_by_id(
+        session: AsyncSession,
+        user_id: int,
+) -> User | None:
+    return await session.get(User, user_id)
 
 def add_user(
-        session: Session,
+        session: AsyncSession,
         email: str,
         password_hash: str,
         role: str

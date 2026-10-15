@@ -1,4 +1,5 @@
-from sqlalchemy.orm import Session
+
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.users.repository import get_user_by_id
 from app.tickets.models import Ticket
@@ -7,13 +8,13 @@ from app.tickets.repository import add_ticket
 class RequesterNotFoundError(Exception):
     pass
 
-def create_ticket(
-        session: Session,
+async def create_ticket(
+        session: AsyncSession,
         title: str,
         description: str,
         requester_id: int
 ) -> Ticket:
-    if get_user_by_id(session, requester_id) is None:
+    if (await get_user_by_id(session, requester_id)) is None:
         raise RequesterNotFoundError()
 
     ticket = add_ticket(
@@ -22,7 +23,7 @@ def create_ticket(
         description=description,
         requester_id=requester_id
     )
-    session.commit()
-    session.refresh(ticket)
+    await session.commit()
+    await session.refresh(ticket)
     return ticket
 
